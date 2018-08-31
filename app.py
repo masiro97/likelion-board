@@ -16,7 +16,14 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
-
+    # comments = db.relationship('Comment', backref='post', lazy=True)
+    
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id') ,nullable=False)
+    
 db.create_all()
 
 @app.route("/")
@@ -65,4 +72,17 @@ def delete(id):
     # 3. 확정하고 DB에 반영한다. Commit
     db.session.commit()
     return redirect("/")
+    
+@app.route("/create_comment")
+def create_comment():
+    
+    content = request.args.get('comment_content')
+    post_id = int(request.args.get('post_id'))
+    comment = Comment(content=content, post_id=post_id)
+    
+    db.session.add(comment)
+    db.session.commit()
+    
+    return redirect("/")
+    
 # app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)), debug=True)
