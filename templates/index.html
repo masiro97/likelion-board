@@ -24,7 +24,11 @@
             <input type="hidden" name="post_id" value="{{p.id}}"/>
             <input type="submit"/>
         </form>
-    
+        {% for c in comments%}
+            {% if c.post_id == p.id %}
+                <p>{{c.content}}</p>
+            {% endif %}
+        {% endfor %}
         <hr>
     {% endfor %}
 </body>

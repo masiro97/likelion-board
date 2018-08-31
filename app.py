@@ -31,8 +31,9 @@ def index():
     # myapp.db에 있는 모든 레코드를 불러와 보여준다.
     # SELECT * FROM posts;
     posts = Post.query.all()
+    comments = Comment.query.all()
     # posts.reverse()
-    return render_template('index.html',posts = reversed(posts))
+    return render_template('index.html', posts = reversed(posts), comments = comments)
     
 @app.route("/create")
 def create():
